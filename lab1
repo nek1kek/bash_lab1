@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# I take all info from https://habr.com/ru/company/ruvds/blog/325522/
+
+# ticket of task: return params in reverse order
+
+# run script: ./lab1 1 2 3 4 5 7
+# will return 7 5 4 3 2 1
+
+# $# - counts parametres -eq == equal
+if [ $# -eq 0 ]
+then
+	echo "Error: no parameters entered"
+else
+	#create an array
+	arr=()
+
+	#the coolest arr $@ returns array of args
+	for arg in $@
+	do
+		arr+=($arg)
+	done
+
+	# now make 'for' cycle
+	echo "For:"
+
+	strArr1=""
+
+	# C-type cycle for, i like it!
+	# $# - 1  return index of last argument
+	for (( i = $# - 1; i >= 0; i-- ))
+	do
+		# update string with answer!
+		strArr1="${strArr1} ${arr[i]}"
+	done
+	echo ${strArr1}
+
+
+	# now make 'while' cycle
+	echo -e "\nWhile:" # -e is for use \n
+
+	# I don`t like bash cuz I can`t put space between = and val
+	strArr2=""
+	dig=$((${#arr[@]} - 1))
+
+
+	while [ ${dig} -ge 0 ]
+	do
+		strArr2="${strArr2} ${arr[${dig}]}"
+		dig=$((${dig} - 1))
+	done
+	echo ${strArr2}
+
+	#F#cking Tests, i don`t like them
+	str1="$* ${strArr1}"
+	str2="$* ${strArr2}" #args + our answer of' while'
+
+	echo -n "Test 'for':"
+	bash ./testLab1 ${str1}
+
+	echo -n -e "\nTest 'while':"
+	bash ./testLab1 ${str2}
+fi
