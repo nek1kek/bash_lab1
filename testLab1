@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#base
+if [ $# -eq 0 ]
+then
+        echo "Error: no parameters entered"
+fi
+
+# I don`t want comment there, cuz it`s almost same like lab1
+var1=1
+count=$(($# / 2))
+errorFound=0
+while [ ${var1} -le ${count} ]
+do
+	#check from middle to sides
+	dig=$(($# + 1 - ${var1}))
+	# !var1 return args[var1]
+	if [ ${!var1} -ne ${!dig} ]
+	then
+		errorFound=1
+		break
+	fi
+	#move var1 up one
+	var1=$((${var1} + 1))
+done
+
+if [ ${errorFound} -eq 1 ]
+then
+	echo "failed"
+else
+	echo "complited"
+fi
